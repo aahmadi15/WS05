@@ -165,11 +165,59 @@ namespace seneca {
         }
     }
 
-    std::ostream& operator<<(std::ostream& os, const Mark& m)
+    std::ostream& operator<<(std::ostream& os, Mark& m)
     {
-        Mark temp = m;
-        return temp.display(os);
+        
+        return m.display(os);
     }
 
-    std::istream& operator >> (std::istream& is)
+    std::istream& operator >> (Mark& m, std::istream& is) {
+        Mark temp = m;
+        int val;
+        bool check = false;
+
+        do {
+            std::cout << "Please enter the mark:\n> ";
+            is >> val;
+            if (val <= 0)
+                std::cout << "Invalid integer, try again.\n> ";
+
+            char ch = is.get();
+
+            if (ch != '\n') {
+                std::cout << "Invalid trailing characters, try again.\n> ";
+                is.ignore(10000, '\n'); //Apparently this is the flush operator to clear the string buffer, a concept that escapes me always...
+            }
+
+            if (val < 0 || val > 100)
+            {
+                std::cout << "Invalid mark.  Enter a value between 0 and 100.\n> ";
+            }
+            m = val;
+            check = true;
+        } while (check);
+
+        std::cout << "You entered: " << m << endl;
+        
+    }
+
+    std::ifstream& operator>> (std::ifstream is, Mark& m) {
+        Mark temp = m;
+
+        char c;
+        int val;
+        char type;
+
+        is >> val;
+        c = is.get();
+        is >> type;
+
+        if (is) {
+            m = val;
+            m = c;
+        }
+        
+
+        return is;
+    }
 }

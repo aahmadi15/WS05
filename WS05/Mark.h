@@ -133,13 +133,15 @@ namespace seneca {
         // display and friends done by students go here 
         std::ostream& display(std::ostream& os);
 
-        std::ostream& display(char dispType, const Mark& obj, ostream& os);
+        std::ostream& display(char dispType, Mark& obj, ostream& os);
 
         
     };
 
     // student helper function prototypes go here
-    std::ostream& operator<<(std::ostream& os, const Mark& m);
+    std::ostream& operator<<(std::ostream& os, Mark& m);
+    std::istream& operator>>(std::ostream& is, Mark& m);
+    std::ifstream& operator>> (std::ifstream, Mark& m);
 }
 
 #endif // !SENECA_MARK_H 
