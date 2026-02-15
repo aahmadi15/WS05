@@ -215,9 +215,25 @@ namespace seneca {
         if (is) {
             m = val;
             m = c;
+            m = type;
         }
         
 
         return is;
+    }
+
+    Mark Mark::operator+(const Mark& m) const {
+        return this -> raw() + m.raw();
+    }
+    Mark Mark::operator+(const Mark& m) const {
+        return this->operator int() + m.operator int();
+    }
+
+    Mark Mark::operator-(const Mark& m) const {
+        return this->raw() - m.raw();
+    }
+
+    Mark Mark::operator-(const Mark& m) const {
+        return this -> operator int() - m.operator int();
     }
 }
