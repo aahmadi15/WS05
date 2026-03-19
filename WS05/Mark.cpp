@@ -41,14 +41,6 @@ namespace seneca {
         return *this;
     }
 
-    Mark Mark::operator+(const Mark& M) const {
-        return Mark(*this) += M;
-    }
-
-    Mark Mark::operator-(const Mark& M)const {
-        return Mark(*this) -= M;
-    }
-
     Mark& Mark::operator/=(int other) {
         m_value = m_value / other;
         return *this;
@@ -116,29 +108,35 @@ namespace seneca {
     }
 
     // student helper function implementations go here
-    std::ostream& Mark::display(std::ostream& os = cout)
+    std::ostream& Mark::display(std::ostream& os)
     {
         if (!isValid())
         {
             if (m_type == GRADE)
             {
-                os << printf("**");
+                os << "**";
             }
 
             else
-                os << printf("***");
+                os << "***";
 
         }
 
         if (m_type == GPA)
         {
             double markDoubleCast = static_cast<double>(*this);
-            os << os.width(1) << os.precision(1) << markDoubleCast;
+            os.setf(std::ios::left);
+            os.fill('_');
+            os.width(3);
+            os << markDoubleCast;
         }
 
         if (m_type == MARK)
         {
-            os << os.fill('_') << os.setf(std::ios::left) << os.width(3) << static_cast<int>(*this);
+            os.fill('_');
+            os.width(3);
+            os.setf(std::ios::right);
+            os << int(*this);
         }
 
         if (m_type == GRADE)
@@ -151,18 +149,20 @@ namespace seneca {
         return os;
     }
 
-    std::ostream& Mark::display(char dispType, const Mark& obj, ostream& os = cout)
+    std::ostream& display(const Mark& obj, char dispType, std::ostream& os)
     {
         Mark temp = obj;
 
-        temp = dispType;
+        temp = MARK;
         temp.display(os);
 
-        if (dispType != 'M')
+        if (dispType != MARK)
         {
             os << ': ';
+            temp = dispType;
             temp.display(os);
         }
+        return os;
     }
 
     std::ostream& operator<<(std::ostream& os, Mark& m)
@@ -171,7 +171,7 @@ namespace seneca {
         return m.display(os);
     }
 
-    std::istream& operator >> (Mark& m, std::istream& is) {
+    std::istream& operator >> (std::istream& is, Mark& m) {
         Mark temp = m;
         int val;
         bool check = false;
@@ -195,10 +195,10 @@ namespace seneca {
             }
             m = val;
             check = true;
-        } while (check);
+        } while (!check);
 
         std::cout << "You entered: " << m << endl;
-        
+        return is;
     }
 
     std::ifstream& operator>> (std::ifstream is, Mark& m) {
@@ -209,12 +209,11 @@ namespace seneca {
         char type;
 
         is >> val;
-        c = is.get();
+        is >> c;
         is >> type;
 
         if (is) {
             m = val;
-            m = c;
             m = type;
         }
         
@@ -222,18 +221,27 @@ namespace seneca {
         return is;
     }
 
-    Mark Mark::operator+(const Mark& m) const {
-        return this -> raw() + m.raw();
+    double operator+(double value, const Mark& m)  {
+        return value + m.raw();
     }
-    Mark Mark::operator+(const Mark& m) const {
-        return this->operator int() + m.operator int();
-    }
-
-    Mark Mark::operator-(const Mark& m) const {
-        return this->raw() - m.raw();
+    int operator+(int value, const Mark& m)  {
+        return value + int(m);
     }
 
-    Mark Mark::operator-(const Mark& m) const {
-        return this -> operator int() - m.operator int();
+    double operator-(double value, const Mark& m) {
+        return value - m.raw();
+    }
+
+    int operator-(int value, const Mark& m) {
+        return value - int(m);
+    }
+
+    double operator/(double other, const Mark& m) {
+        return other / int(m.m_value);
+    }
+
+    int operator/(int value, const Mark& m) {
+        int round = int(std::round(m.m_value));
+        return value / round;
     }
 }

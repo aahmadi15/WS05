@@ -65,14 +65,11 @@ namespace seneca {
         /// <param name="other">The right operand Mark object</param>
         /// <returns>A new Mark object with the sum and the left operand's type</returns>
 
-        Mark operator+ (const Mark& other) const;
-
         /// <summary>
         /// Returns a new Mark object representing the difference between the left and right operands. The type is that of the left operand.
         /// </summary>
         /// <param name="other">The right operand Mark object</param>
         /// <returns>A new Mark object with the difference and the left operand's type</returns>
-        Mark operator- (const Mark& other) const;
 
 
         /// <summary>
@@ -131,17 +128,26 @@ namespace seneca {
 
 
         // display and friends done by students go here 
-        std::ostream& display(std::ostream& os);
+        std::ostream& display(std::ostream& os = std::cout);
 
-        std::ostream& display(char dispType, Mark& obj, ostream& os);
+        std::ostream& display(const Mark& obj, char dispType, std::ostream& os = std::cout);
 
-        
+        friend double operator/(double value, const Mark& m);
+        friend int operator/(int value, const Mark& m);
     };
 
     // student helper function prototypes go here
     std::ostream& operator<<(std::ostream& os, Mark& m);
-    std::istream& operator>>(std::ostream& is, Mark& m);
+    std::istream& operator>>(std::istream& is, Mark& m);
     std::ifstream& operator>> (std::ifstream, Mark& m);
+
+    int operator- (int value, const Mark& other);
+
+    double operator- (double value, const Mark& other);
+
+    int operator+ (int value, const Mark& other);
+
+    double operator+ (double value, const Mark& other);
 }
 
 #endif // !SENECA_MARK_H 
