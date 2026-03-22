@@ -54,7 +54,7 @@ void displayTest() {
 void displayHelperTest() {
     Mark M(47);
     while (M) {
-        display(M, MARK) << endl;
+        display(M, MARK, std::cout) << endl;
         display(M, GRADE) << endl;
         display(M, GPA) << endl <<
             "==============" << endl;

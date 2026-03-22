@@ -149,7 +149,7 @@ namespace seneca {
         return os;
     }
 
-    std::ostream& display(const Mark& obj, char dispType, std::ostream& os)
+    std::ostream& display(const Mark& obj,char dispType, std::ostream& os)
     {
         Mark temp = obj;
 
@@ -201,7 +201,7 @@ namespace seneca {
         return is;
     }
 
-    std::ifstream& operator>> (std::ifstream is, Mark& m) {
+    std::ifstream& operator>> (std::ifstream& is, Mark& m) { 
         Mark temp = m;
 
         char c;
